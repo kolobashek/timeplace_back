@@ -1,33 +1,26 @@
-import { Injectable } from '@nestjs/common';
-
-export type User = any;
+import { Model } from 'mongoose';
+import { Inject, Injectable } from '@nestjs/common';
+// import { InjectModel } from '@nestjs/mongoose';
+import { User } from './interfaces/user.interface';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
-// TODO: Здесь должны быть модель пользователя и уровней доступа, как TypeORM, Sequelize, Mongoose и т. Д.
 export class UsersService {
-  private readonly users: User[];
+  constructor(
+    @Inject('USER_MODEL')
+    private userModel: Model<User>
+  ) { }
 
-  constructor() {
-    this.users = [
-      {
-        userId: 1,
-        username: 'john',
-        password: 'changeme',
-      },
-      {
-        userId: 2,
-        username: 'chris',
-        password: 'secret',
-      },
-      {
-        userId: 3,
-        username: 'maria',
-        password: 'guess',
-      },
-    ];
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const createdUser = new this.userModel(createUserDto);
+    return createdUser.save();
   }
 
-  async findOne(username: string): Promise<User | undefined> {
-    return this.users.find(user => user.username === username);
+  async findAll(): Promise<User[]> {
+    return this.userModel.find().exec();
+  }
+
+  async findOneById(id: number): Promise<User[]> {
+    return this.userModel.find({ id }).exec();
   }
 }
