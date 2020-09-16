@@ -1,9 +1,25 @@
 import * as mongoose from 'mongoose';
 
+
 export const databaseProviders = [
   {
     provide: 'DATABASE_CONNECTION',
-    useFactory: async (): Promise<typeof mongoose> =>
-      await mongoose.connect(`mongodb://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}`),
+    useFactory: async (): Promise<typeof mongoose> => {
+      const { DATABASE_USER, DATABASE_PASSWORD, DATABASE_HOST, DATABASE_PORT, DATABASE_NAME } = process.env
+      const uri = `mongodb://${DATABASE_HOST}:${DATABASE_PORT}`
+      return await mongoose.connect(
+        uri,
+        {
+          dbName: DATABASE_NAME,
+          user: DATABASE_USER,
+          pass: DATABASE_PASSWORD,
+          authSource: 'admin'
+        },
+      )
+        .catch(e => {
+          console.log('DB connection error', e);
+          throw e;
+        })
+    }
   },
 ];

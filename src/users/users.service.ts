@@ -1,7 +1,7 @@
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Inject, Injectable } from '@nestjs/common';
 // import { InjectModel } from '@nestjs/mongoose';
-import { User } from './interfaces/user.interface';
+import { User } from './interface/user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
@@ -16,11 +16,23 @@ export class UsersService {
     return createdUser.save();
   }
 
-  async findAll(): Promise<User[]> {
+  async getAll(): Promise<User[]> {
     return this.userModel.find().exec();
   }
 
-  async findOneById(id: number): Promise<User[]> {
-    return this.userModel.find({ id }).exec();
+  async getOne(_id: string): Promise<User[]> {
+    return this.userModel.find({ _id }).exec();
+  }
+
+  async delete(_id: string): Promise<User[]> {
+    return this.userModel.find({ _id }).remove().exec();
+  }
+
+  async update(_id: Types.ObjectId): Promise<User[]> {
+    return this.userModel.find({ _id }).remove().exec();
+  }
+
+  async deleteAll(): Promise<User[]> {
+    return this.userModel.find().remove().exec();
   }
 }

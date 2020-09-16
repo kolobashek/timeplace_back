@@ -3,7 +3,6 @@ import { Document } from 'mongoose';
 enum Roles { admin, user, moderator }
 
 export interface User extends Document {
-  readonly id: number,
   readonly birth: string,
   readonly name: string,
   readonly email: string,

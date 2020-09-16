@@ -1,50 +1,32 @@
-import { CreateUserInput } from './../../graphql.schema';
-// import { Document } from 'mongoose';
-// import * as mongoose from 'mongoose';
-import {
-  // Prop,
-  Schema,
-  SchemaFactory
-} from '@nestjs/mongoose';
+import { Schema } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 
 const RoleEnum = ['admin', 'user', 'moderator']
 
 @Schema()
-export class CreateUserDto extends CreateUserInput {
-  @ApiProperty()
-  id: number;
+export class CreateUserDto {
 
-  // @Prop({ unique: true })
-  @ApiProperty()
-  name: string;
+  @ApiProperty({ type: String })
+  readonly name: string;
 
-  // @Prop()
-  @ApiProperty()
-  birth: string;
+  @ApiProperty({ type: String })
+  readonly birth: string;
 
-  // @Prop({ required: true, unique: true })
-  @ApiProperty()
-  email: string;
+  @ApiProperty({ type: String })
+  readonly email: string;
 
-  // @Prop({ required: true })
-  @ApiProperty()
-  hash: string;
+  @ApiProperty({ type: String })
+  readonly hash: string;
 
-  // @Prop({ required: true })
-  @ApiProperty()
-  salt: string;
+  @ApiProperty({ type: String })
+  readonly salt: string;
 
-  // @Prop()
-  @ApiProperty()
-  image?: string;
+  @ApiProperty({ type: String })
+  readonly image?: string;
 
-  @ApiProperty({ enum: RoleEnum, default: 'user', isArray: true })
-  roles: typeof RoleEnum[] = [];
+  @ApiProperty({ enum: RoleEnum, default: 'user', type: String })
+  readonly roles: typeof RoleEnum[] = [];
 
-  // @Prop()
-  @ApiProperty()
-  country?: string;
+  @ApiProperty({ type: String })
+  readonly country?: string;
 }
-
-export const UserSchema = SchemaFactory.createForClass(CreateUserDto);
