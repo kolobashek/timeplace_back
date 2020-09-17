@@ -10,7 +10,9 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   const options = new DocumentBuilder()
     .build();
-  const document = SwaggerModule.createDocument(app, options);
+  const document = SwaggerModule.createDocument(app, options, {
+    ignoreGlobalPrefix: true,
+  });
   SwaggerModule.setup('api', app, document);
   Mongoose.prototype.set('debug', true)
   // const definitionsFactory = new GraphQLDefinitionsFactory();

@@ -15,7 +15,7 @@ export class UsersController {
   }
   // @UseGuards(JwtAuthGuard)
   @Get('id=:id')
-  async getUser(@Param('id') id: string): Promise<User[]> {
+  async getUser(@Param('id') id: string): Promise<User> {
     return this.userService.getOne(id)
   }
   @Get()
@@ -27,7 +27,7 @@ export class UsersController {
     return this.userService.deleteAll()
   }
   @Get('delete=:id')
-  async deleteUser(@Param('id') id: string): Promise<User[]> {
+  async deleteUser(@Param('id') id: string): Promise<User> {
     return this.userService.delete(id)
   }
 }

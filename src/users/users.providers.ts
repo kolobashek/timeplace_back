@@ -1,4 +1,3 @@
-// import { UserSchema } from './dto/create-user.dto';
 import { Connection } from 'mongoose';
 import { UserSchema } from './schema/user.schema';
 

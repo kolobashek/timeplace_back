@@ -1,6 +1,5 @@
 import { Document } from 'mongoose';
 
-enum Roles { admin, user, moderator }
 
 export interface User extends Document {
   readonly birth: string,
@@ -9,6 +8,10 @@ export interface User extends Document {
   readonly hash: string,
   readonly salt: string,
   readonly image: string,
-  readonly roles: Roles,
+  readonly roles: {
+    type: string,
+    enum: ['admin', 'user', 'moderator'],
+    default: 'user'
+  },
   readonly country: string,
 }
