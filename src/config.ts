@@ -13,32 +13,30 @@ const {
     MAIL_PORT,
     MAIL_SECURE,
     MAIL_USER,
-    MAIL_PASS
+    MAIL_PASS,
 } = process.env
 export default () => ({
-    "db": {
-        "user": DB_USER,
-        "pass": DB_PASS,
-        "host": DB_HOST,
-        "port": DB_PORT,
-        "database": DB_BASE,
-        "authSource": DB_AUTHBASE
+    db: {
+        user: DB_USER,
+        pass: DB_PASS,
+        host: DB_HOST,
+        port: DB_PORT,
+        database: DB_BASE,
+        authSource: DB_AUTHBASE,
     },
-    "host": {
-        "url": APP_URL,
-        "port": APP_PORT
+    host: {
+        url: APP_URL,
+        port: APP_PORT,
     },
-    "jwt": {
-        "secretOrKey": JWT_KEY,
-        "expiresIn": JWT_EXPIRES
+    jwt: {
+        secretOrKey: JWT_KEY,
+        expiresIn: JWT_EXPIRES,
     },
-    "mail": {
-        "host": MAIL_HOST,
-        "port": MAIL_PORT,
-        "secure": MAIL_SECURE,
-        "user": MAIL_USER,
-        "pass": MAIL_PASS
-    }
+    mail: {
+        host: MAIL_HOST,
+        port: MAIL_PORT,
+        secure: MAIL_SECURE,
+        user: MAIL_USER,
+        pass: MAIL_PASS,
+    },
 })
-
-

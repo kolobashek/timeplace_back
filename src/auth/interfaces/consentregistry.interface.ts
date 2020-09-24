@@ -1,11 +1,11 @@
-import { Document } from 'mongoose';
+import { Document } from 'mongoose'
 
-export interface ConsentRegistry extends Document{
-  email: string,
-  registrationForm: string[],
-  checkboxText: string,
-  date: Date,
-  privacyPolicy: string,
-  cookiePolicy: string,
-  acceptedPolicy: string
+export interface ConsentRegistry extends Document {
+    email: string
+    registrationForm: string[]
+    checkboxText: string
+    date: Date
+    privacyPolicy: string
+    cookiePolicy: string
+    acceptedPolicy: string
 }
