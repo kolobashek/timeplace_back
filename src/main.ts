@@ -1,30 +1,43 @@
-import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { Mongoose } from 'mongoose';
-
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
+import { join } from 'path';
+import * as express from 'express';
+import { AllExceptionsFilter } from './common/filters/all-exception.filter';
+import * as helmet from 'helmet';
+import * as rateLimit from 'express-rate-limit';
+import { config } from 'dotenv';
+
+config()
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(new ValidationPipe());
-  const options = new DocumentBuilder()
-    .build();
-  const document = SwaggerModule.createDocument(app, options, {
-    ignoreGlobalPrefix: true,
-  });
-  SwaggerModule.setup('api', app, document);
-  Mongoose.prototype.set('debug', true)
-  // const definitionsFactory = new GraphQLDefinitionsFactory();
-  // definitionsFactory.generate({
-  //   typePaths: ['./src/**/*.graphql'],
-  //   path: join(process.cwd(), 'src/graphql.schema.ts'),
-  //   watch: true,
-  //   emitTypenameField: true,
-  //   outputAs: 'class',
-  // });
+  config()
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.use('/public', express.static(join(__dirname, '../../public')));
+  var bodyParser = require('body-parser');
+  app.use(bodyParser.json({ limit: '5mb' }));
+  app.use(bodyParser.urlencoded({ limit: '5mb', extended: true }));
+  app.useGlobalFilters(new AllExceptionsFilter());
 
-  await app.listen(3005);
-  console.log(`Application is running on: ${await app.getUrl()}`);
+  /* SECURITY */
+  app.enable("trust proxy");
+  app.use(helmet());
+
+  app.use(rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+    message:
+      "Too many requests from this IP, please try again later"
+  }));
+  const createAccountLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour window
+    max: 3, // start blocking after 3 requests
+    message:
+      "Too many accounts created from this IP, please try again after an hour"
+  });
+  app.use("/auth/email/register", createAccountLimiter);
+  /******/
+
+  await app.listen(3000);
 }
 bootstrap();

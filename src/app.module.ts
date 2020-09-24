@@ -1,23 +1,31 @@
+import { config as Config } from 'dotenv';
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
-
-import configuration from '../config/configuration';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import { default as configuration } from './config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+// import { ConfigService } from 'nestjs-dotenv';
 
+Config()
 @Module({
   imports: [
-    AuthModule,
-    UsersModule,
-    ConfigModule.forRoot({
-      load: [configuration],
+    ConfigModule.forRoot({ load: [configuration], isGlobal: true, expandVariables: true }),
+    MongooseModule.forRootAsync({
+      useFactory: () => {
+        const userString = process.env.DB_USER && process.env.DB_PASS ? (process.env.DB_USER + ':' + process.env.DB_PASS + '@') : '';
+        const authSource = process.env.DB_AUTHBASE ? ('?authSource=' + process.env.DB_AUTHBASE + '&w=1') : '';
+        const uri = `mongodb://${userString}${process.env.DB_HOST}:${(process.env.DB_PORT || '27017')}/${process.env.DB_BASE}${authSource}`
+        console.log(uri)
+        return ({
+          uri: uri,
+        })
+      },
     }),
-    MongooseModule.forRoot(
-      `mongodb://${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}`,
-    )
+    UsersModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],
