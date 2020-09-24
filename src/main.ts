@@ -39,6 +39,6 @@ async function bootstrap() {
     app.use('/auth/email/register', createAccountLimiter)
     /******/
 
-    await app.listen(3000)
+    await app.listen(3456)
 }
 bootstrap()
