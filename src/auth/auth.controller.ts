@@ -22,7 +22,7 @@ export class AuthController {
     constructor(
         private readonly authService: AuthService,
         private readonly userService: UsersService
-    ) {}
+    ) { }
 
     @Post('email/login')
     @HttpCode(HttpStatus.OK)

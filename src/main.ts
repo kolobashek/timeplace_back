@@ -22,6 +22,7 @@ async function bootstrap() {
     /* SECURITY */
     app.enable('trust proxy')
     app.use(helmet())
+    app.enableCors()
 
     app.use(
         rateLimit({
