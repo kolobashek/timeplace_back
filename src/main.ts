@@ -40,6 +40,7 @@ async function bootstrap() {
     app.use('/auth/email/register', createAccountLimiter)
     /******/
 
-    await app.listen(3456)
+    await app.listen(process.env.APP_PORT)
+    console.log(`App listennings on port ${process.env.APP_PORT}`)
 }
 bootstrap()
