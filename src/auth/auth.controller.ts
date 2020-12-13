@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common'
 import { AuthService } from './auth.service'
 import { Login } from './interfaces/login.interface'
-import { User } from '../users/interfaces/user.interface'
+// import { User } from '../users/interfaces/user.interface'
 import { ResponseSuccess, ResponseError } from '../common/dto/response.dto'
 import { IResponse } from '../common/interfaces/response.interface'
 import { CreateUserDto } from '../users/dto/create-user.dto'
@@ -51,8 +51,13 @@ export class AuthController {
                 newUser.email
             )
             if (sent) {
+                var response = await this.authService.validateLogin(
+                    createUserDto.email,
+                    createUserDto.password
+                )
                 return new ResponseSuccess(
-                    'REGISTRATION.USER_REGISTERED_SUCCESSFULLY'
+                    'REGISTRATION.USER_REGISTERED_SUCCESSFULLY',
+                    response
                 )
             } else {
                 return new ResponseError('REGISTRATION.ERROR.MAIL_NOT_SENT')

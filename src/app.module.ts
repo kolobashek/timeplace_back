@@ -34,6 +34,7 @@ Config()
                 console.log(uri)
                 return {
                     uri: uri,
+                    useFindAndModify: false
                 }
             },
         }),

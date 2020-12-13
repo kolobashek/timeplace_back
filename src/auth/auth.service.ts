@@ -200,12 +200,13 @@ export class AuthService {
             })
 
             let mailOptions = {
-                from: '"Company" <' + process.env.MAIL_USER + '>',
+                from: '"Timeplace" <' + process.env.MAIL_USER + '>',
                 to: email, // list of receivers (separated by ,)
                 subject: 'Verify Email',
                 text: 'Verify Email',
-                html: `Hi! <br>${process.env.APP_URL}:${process.env.APP_PORT}/auth/email/verify/${model.emailToken}<br> Thanks for your registration<br><br>
-        <a href=${process.env.APP_URL}:${process.env.APP_PORT}/auth/email/verify/${model.emailToken}>Click here to activate your account</a>`, // html body
+                html: `Hello! <br>${process.env.APP_URL}:${process.env.APP_PORT}/auth/email/verify/${model.emailToken}<br> Thanks for your registration<br><br>
+        <a href=${process.env.APP_URL}:${process.env.APP_PORT}/auth/email/verify/${model.emailToken}>Click here to activate your account</a><br><br>
+        Ignore this message, if You did not registering in Timeplace.`, // html body
             }
 
             var sent = await new Promise<boolean>(async function(
